@@ -22,7 +22,7 @@ public class AdivinApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		System.out.println(numAdivinar);
 		texto = new TextField();
 		texto.setPromptText("Texto");
 		texto.setMaxWidth(150);
@@ -47,38 +47,53 @@ public class AdivinApp extends Application {
 	}
 
 	private void onadivinaButtonAction(ActionEvent e) {
-		boolean Adivinado = false;
-		int numIntroducido;
-		numIntroducido = Integer.parseInt(texto.getText());
-		while (Adivinado != true) {
+
+		try {
+			int numIntroducido;
+			numIntroducido = Integer.parseInt(texto.getText());
+
+			Alert alertW = new Alert(AlertType.WARNING);
+
 			if (numIntroducido < 1 || numIntroducido > 100) {
+
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("AdivinApp");
 				alert.setHeaderText("Error");
 				alert.setContentText("El número introducido no es válido");
 				alert.showAndWait();
-				Adivinado = true;
-			} else if (numIntroducido == numAdivinar) {
+			}
+			if (numIntroducido == numAdivinar) {
+
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("AdivinApp");
 				alert.setHeaderText("¡Has ganado!");
-				alert.setContentText("Solo has necesitado " + numIntentos);
+				alert.setContentText("Solo has necesitado " + numIntentos + " intentos.\n" + "Vuelve a jugar y hazlo mejor.");
+				alert.setContentText("Vuelve a jugar y hazlo mejor.");
 				alert.showAndWait();
 
-				Adivinado = true;
 			} else if (numIntroducido != numAdivinar) {
-				numIntentos++;
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("AdivinApp");
-				alert.setHeaderText("¡Has fallado!");
 
-				if (numIntroducido > numAdivinar) {
-					alert.setContentText("El numero a adivinar es menor que " + numIntroducido);
+				alertW.setTitle("AdivinApp");
+				alertW.setHeaderText("¡Has fallado!");
+
+				if (numAdivinar >= 50) {
+					numIntentos++;
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setHeaderText("¡Has fallado!");
+					alert.setContentText("El número a adivinar es mayor a 50");
+					alert.showAndWait();
 				} else {
-					alert.setContentText("El numero a adivinar es mayor que " + numIntroducido);
+					numIntentos++;
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setHeaderText("¡Has fallado!");
+					alert.setContentText("El número a adivinar es menor a 50");
+					alert.showAndWait();
 				}
-				alert.showAndWait();
+
+				numIntentos++;
 			}
+		} catch (Exception x) {
+			x.printStackTrace();
 
 		}
 
